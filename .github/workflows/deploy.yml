@@ -1,0 +1,37 @@
+name: Deploy CAP Frontend
+
+on:
+  push:
+    branches:
+    - release/*
+
+jobs:
+  my_job:
+    name: deploy to staging
+    runs-on: ubuntu-22.04
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Docker
+      uses: docker/setup-buildx-action@v1
+
+    - name: Log in to Docker Hub
+      env:
+        DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+        DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
+      run: |
+        echo "$DOCKER_HUB_TOKEN" | docker login -u "$DOCKER_HUB_USERNAME" --password-stdin
+
+    - name: Build and push Docker image
+      run: |
+        # Read the current version
+        CURRENT_VERSION=$(cat version.txt)
+        # Bump the version
+        NEW_VERSION=$(echo $CURRENT_VERSION | awk -F. -v OFS=. '{$NF++;print}')
+        echo $NEW_VERSION > version.txt
+
+        # Build and push the Docker image with the new version tag
+        docker build -t druva28/cap-frontend:$NEW_VERSION .
+        docker push druva28/cap-frontend:$NEW_VERSION
