@@ -28,10 +28,9 @@ jobs:
       run: |
         # Read the current version
         CURRENT_VERSION=$(cat version.txt)
-        # Bump the version
-        NEW_VERSION=$(echo $CURRENT_VERSION | awk -F. -v OFS=. '{$NF++;print}')
-        echo $NEW_VERSION > version.txt
 
         # Build and push the Docker image with the new version tag
-        docker build -t druva28/cap-frontend:$NEW_VERSION .
-        docker push druva28/cap-frontend:$NEW_VERSION
+        docker build -t druva28/cap-web:$CURRENT_VERSION .
+        docker push druva28/cap-web:$CURRENT_VERSION
+        docker tag druva28/cap-web:$CURRENT_VERSION druva28/cap-web:latest
+        docker push druva28/cap-web:latest
