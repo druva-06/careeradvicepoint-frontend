@@ -28,5 +28,9 @@ jobs:
       run: |
         # Read the current version
         CURRENT_VERSION=$(cat version.txt)
-        docker build -t druva28/cap-frontend:$CURRENT_VERSION .
-        docker push druva28/cap-frontend:$CURRENT_VERSION
+
+        # Build and push the Docker image with the new version tag
+        docker build -t druva28/cap-web:$CURRENT_VERSION .
+        docker push druva28/cap-web:$CURRENT_VERSION
+        docker tag druva28/cap-web:$CURRENT_VERSION druva28/cap-web:latest
+        docker push druva28/cap-web:latest
