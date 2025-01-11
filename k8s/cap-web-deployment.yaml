@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cap-web-deployment
+  labels:
+    name: cap-web-deployment
+    app: cap
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      name: cap-web-pod
+      app: cap
+  template:
+    metadata:
+      labels:
+        name: cap-web-pod
+        app: cap
+    spec:
+      containers:
+        - name: cap-web
+          image: druva28/cap-web:latest
+          ports:
+          - containerPort: 80

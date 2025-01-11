@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cap-web-service
+  labels:
+    name: cap-web-service
+    app: cap
+spec:
+  type: NodePort
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 30001
+  selector:
+    name: cap-web-pod
+    app: cap
+    
