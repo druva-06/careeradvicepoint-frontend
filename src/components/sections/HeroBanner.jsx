@@ -10,15 +10,7 @@ export default function HeroBanner() {
     {
       id: "study-india",
       title: "Study India",
-    },
-    {
-      id: "study-online",
-      title: "Study Online",
-    },
-    {
-      id: "jobs",
-      title: "Jobs",
-    },
+    }
   ];
 
   const [currentActive, setCurrentActive] = useState(data[0]);
