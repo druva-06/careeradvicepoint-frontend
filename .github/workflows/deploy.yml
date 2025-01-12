@@ -34,13 +34,14 @@ jobs:
         docker push druva28/cap-web:$CURRENT_VERSION
         docker tag druva28/cap-web:$CURRENT_VERSION druva28/cap-web:latest
         docker push druva28/cap-web:latest
-      
+        
     - name: Deploy to VPS
       uses: appleboy/ssh-action@v0.1.7
       with:
         host: ${{ secrets.VPS_HOST }}
         username: ${{ secrets.VPS_USER }}
-        key: ${{ secrets.VPS_SSH_KEY }}
+        password: ${{ secrets.VPS_PASSWORD }}
         script: |
           cd deployments/frontend
-          microk8s kubectl apply -f cap-web-deployment.yaml
+          microk8s kubectl delete pod cap-web-pod
+          microk8s kubectl apply -f cap-web-pod.yaml
