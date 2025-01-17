@@ -1027,11 +1027,8 @@ textarea {
     border: none;
     color: #898989;
     font-size: 14px;
-    padding: 13px 10px;
-    /* -webkit-appearance: none; 
-    -moz-appearance: none; 
-    appearance: none;  */
-
+    padding: 5px 10px;
+    border: 5px solid transparent;
 }
 
 .filter__button {

@@ -11,7 +11,7 @@
             { "id": 6, "name": "Ireland", "value": "ireland", "isChecked": false },
             { "id": 7, "name": "Germany", "value": "germany", "isChecked": false }
         ],
-        "course": [
+        "department": [
             {
               "id": 1,
               "name": "Faculty of Business",
@@ -117,10 +117,19 @@
               "isChecked": false
             }
         ],
-        "intake": [
-            { "id": 1, "name": "January", "value": "january", "isChecked": false },
-            { "id": 2, "name": "May", "value": "may", "isChecked": false },
-            { "id": 3, "name": "September", "value": "september", "isChecked": false }
+        "levelOfEducation": [
+            {
+              "id": 1,
+              "name": "Undergraduate",
+              "isChecked": false,
+              "value": "undergraduate"
+            },
+            {
+              "id": 2,
+              "name": "Postgraduate",
+              "isChecked": false,
+              "value": "postgraduate"
+            }
         ]
     },
     "study-india": {
@@ -176,7 +185,7 @@
               "value": "andhra-pradesh"
             }
         ],
-        "course": [
+        "department": [
             {
               "id": 1,
               "name": "MBA",

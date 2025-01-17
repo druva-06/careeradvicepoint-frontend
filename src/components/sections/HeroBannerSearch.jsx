@@ -1,11 +1,33 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 import educationDetails from "../../utils/education-details.json";
 import SignUpModal from "../modal/SignUpModal";
 import AbroadMarksModal from "../modal/AbroadMarksModal";
+import { updateFilters } from "../../features/search/collegeCourseSearchSlice";
 
 export default function HeroBannerSearch({ currentActive }) {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [openModal, setOpenModal] = useState(false);
+  const { filters } = useSelector((state) => state.collegeCourseSearch);
+  console.log(filters);
+
+  const handleSelectChange = (e) => {
+    const optionType = e.target.options[0].text;
+    if (optionType === "Country") {
+      dispatch(updateFilters({ countries: [e.target.value] }));
+    }
+    if (optionType === "Department") {
+      dispatch(updateFilters({ departments: [e.target.value] }));
+    }
+    if (optionType === "Graduation Level") {
+      dispatch(updateFilters({ graduation_levels: [e.target.value] }));
+    }
+  };
 
   return (
     <>
@@ -15,8 +37,13 @@ export default function HeroBannerSearch({ currentActive }) {
           <select
             className="col-12 col-lg filter__select"
             defaultValue={
-              currentActive.id === "study-abroad" ? "Country" : "City"
+              filters.countries.length == 0
+                ? currentActive.id === "study-abroad"
+                  ? "Country"
+                  : "City"
+                : filters.countries[filters.countries.length - 1]
             }
+            onChange={handleSelectChange}
           >
             {currentActive.id === "study-abroad" ? (
               <option key="location" disabled>
@@ -37,16 +64,21 @@ export default function HeroBannerSearch({ currentActive }) {
           </select>
           <select
             className="col-12 col-lg filter__select"
-            defaultValue="Course"
+            defaultValue={
+              filters.departments.length == 0
+                ? "Department"
+                : filters.departments[filters.departments.length - 1]
+            }
+            onChange={handleSelectChange}
           >
-            <option key="course" disabled>
-              Course
+            <option key="department" disabled>
+              Department
             </option>
-            {educationDetails[currentActive.id].course.map((item) => (
+            {educationDetails[currentActive.id].department.map((item) => (
               <option key={item.id}>{item.name}</option>
             ))}
           </select>
-          <select
+          {/* <select
             className="col-12 col-lg filter__select"
             defaultValue="Specialization"
           >
@@ -56,34 +88,25 @@ export default function HeroBannerSearch({ currentActive }) {
             {educationDetails[currentActive.id].specializations.map((item) => (
               <option key={item.id}>{item.name}</option>
             ))}
-          </select>
+          </select> */}
           <select
             className="col-12 col-lg filter__select"
             defaultValue={
-              currentActive.id === "study-abroad"
-                ? "Intake"
-                : "Level Of Education"
+              filters.departments.length == 0
+                ? "Graduation Level"
+                : filters.departments[filters.departments.length - 1]
             }
+            onChange={handleSelectChange}
           >
-            {currentActive.id === "study-abroad" ? (
-              <option key="education-type" disabled>
-                Intake
-              </option>
-            ) : (
-              <option key="education-type" disabled>
-                Level Of Education
-              </option>
-            )}
-            {currentActive.id === "study-abroad"
-              ? educationDetails[currentActive.id].intake.map((item) => (
-                  <option key={item.id}>{item.name}</option>
-                ))
-              : educationDetails[currentActive.id].levelOfEducation.map(
-                  (item) => <option key={item.id}>{item.name}</option>
-                )}
+            <option key="education-type" disabled>
+              Graduation Level
+            </option>
+            {educationDetails[currentActive.id].levelOfEducation.map((item) => (
+              <option key={item.id}>{item.name}</option>
+            ))}
           </select>
           <button
-            onClick={() => setOpenModal(true)}
+            onClick={() => navigate("/study-abroad")}
             className="col-12 col-lg filter__button"
           >
             <span>Search</span>
