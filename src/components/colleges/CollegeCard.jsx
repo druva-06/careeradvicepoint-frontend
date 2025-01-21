@@ -5,7 +5,7 @@ const CollegeCard = ({ item }) => {
       <div className="courses__item-two shine__animate-item">
         <div className="courses__item-two-thumb">
           <Link to={`/course/${item.id}`} className="shine__animate-link">
-            <img src={new URL(`../../assets/img/courses/${item.logo}`, import.meta.url).href} alt="img" />
+            <img src={new URL(`../../assets/img/courses/course_thumb01.jpg`, import.meta.url).href} alt="img" />
           </Link>
           <div className="author">
             <Link to={`/course/${item.id}`}>
@@ -19,11 +19,11 @@ const CollegeCard = ({ item }) => {
             className="courses__item-tag"
             style={{ backgroundColor: "#E8F9EF", color: "#04BC53" }}
           >
-            Graphic Design
+            {item.collegeName}
           </Link>
           <h5 className="title">
             <Link to={`/course/${item.id}`}>
-              Bigener Adobe Illustrator for Graphic Design
+              {item.courseName}
             </Link>
           </h5>
           <ul className="courses__item-meta list-wrap">

@@ -7,14 +7,17 @@ import educationDetails from "../../utils/education-details.json";
 import SignUpModal from "../modal/SignUpModal";
 import AbroadMarksModal from "../modal/AbroadMarksModal";
 import { updateFilters } from "../../features/search/collegeCourseSearchSlice";
+import axios from "axios";
+import { setCollegeCourseData } from "../../features/data/collegeCourseDataSlice";
 
 export default function HeroBannerSearch({ currentActive }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [openModal, setOpenModal] = useState(false);
-  const { filters } = useSelector((state) => state.collegeCourseSearch);
-  console.log(filters);
+  const collegeCourses = useSelector((state) => state.collegeCourseSearch);
+  const { filters } = collegeCourses;
+  console.log("filters", filters);
 
   const handleSelectChange = (e) => {
     const optionType = e.target.options[0].text;
@@ -26,6 +29,27 @@ export default function HeroBannerSearch({ currentActive }) {
     }
     if (optionType === "Graduation Level") {
       dispatch(updateFilters({ graduation_levels: [e.target.value] }));
+    }
+  };
+
+  const fetchUsers = async () => {
+    try {
+      console.log("collegeCourses", collegeCourses);
+
+      const response = await axios.post(
+        "http://82.112.234.51//api/college-course/collegeCourses",
+        collegeCourses,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      dispatch(setCollegeCourseData(response.data));
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    } finally {
+      console.log("Done fetching users");
     }
   };
 
@@ -92,9 +116,11 @@ export default function HeroBannerSearch({ currentActive }) {
           <select
             className="col-12 col-lg filter__select"
             defaultValue={
-              filters.departments.length == 0
+              filters.graduation_levels.length == 0
                 ? "Graduation Level"
-                : filters.departments[filters.departments.length - 1]
+                : filters.graduation_levels[
+                    filters.graduation_levels.length - 1
+                  ]
             }
             onChange={handleSelectChange}
           >
@@ -106,7 +132,10 @@ export default function HeroBannerSearch({ currentActive }) {
             ))}
           </select>
           <button
-            onClick={() => navigate("/study-abroad")}
+            onClick={() => {
+              fetchUsers();
+              navigate("/study-abroad");
+            }}
             className="col-12 col-lg filter__button"
           >
             <span>Search</span>

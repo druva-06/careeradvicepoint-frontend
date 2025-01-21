@@ -6,6 +6,7 @@ import indiaEducationFilterSlice from "./indiaEducation/indiaEducationFilterSlic
 import onlineEducationSlice from "./onlineEducation/onlineEducationSlice";
 import onlineEducationFilterSlice from "./onlineEducation/onlineEducationFilterSlice";
 import collegeCourseSearchSlice from "./search/collegeCourseSearchSlice";
+import collegeCourseDataSlice from "./data/collegeCourseDataSlice";
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ export const store = configureStore({
     onlineEducation: onlineEducationSlice,
     onlineEducationFilter: onlineEducationFilterSlice,
     collegeCourseSearch: collegeCourseSearchSlice,
+    collegeCourseData: collegeCourseDataSlice,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(),
 });

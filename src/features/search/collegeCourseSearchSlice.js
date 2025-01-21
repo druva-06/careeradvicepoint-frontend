@@ -25,8 +25,7 @@ const initialState = {
     },
   },
   search: {
-    term: "Engineering",
-    fields: ["name", "description"],
+    term: "",
   },
 };
 

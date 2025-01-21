@@ -14,8 +14,8 @@
         "department": [
             {
               "id": 1,
-              "name": "Faculty of Business",
-              "value": "faculty-of-business",
+              "name": "Arts",
+              "value": "arts",
               "isChecked": false
             },
             {

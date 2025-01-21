@@ -1,5 +1,5 @@
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import colleges from "../../../data/colleges";
 import {
   addPerPage,
   addSort,
@@ -17,85 +17,14 @@ import {
 import CollegeCard from "../CollegeCard";
 
 const AllColleges = () => {
-  const { collegeList, collegeSort } = useSelector(
-    (state) => state.abroadEducationFilter
-  );
-  const { country, course, specializations, intake } = collegeList || {};
+  const [colleges, setColleges] = useState([]);
+  const { response } = useSelector((state) => state.collegeCourseData);
 
-  const { sort, perPage } = collegeSort;
-  const dispatch = useDispatch();
-
-  // country filter
-  const countryFilter = (item) =>
-    country?.length !== 0
-      ? country?.includes(
-          item?.country?.split(" ").join("").toLocaleLowerCase()
-        )
-      : item;
-
-  // course filter
-  const courseFilter = (item) =>
-    course?.length !== 0
-      ? course?.includes(item?.course?.split(" ").join("").toLocaleLowerCase())
-      : item;
-
-  // specializations filter
-  const specializationsFilter = (item) =>
-    specializations?.length !== 0
-      ? specializations?.includes(
-          item?.specializations?.split(" ").join("").toLocaleLowerCase()
-        )
-      : item;
-
-  // intake filter
-  const intakeFilter = (item) =>
-    intake?.length !== 0
-      ? intake?.includes(item?.intake?.split(" ").join("").toLocaleLowerCase())
-      : item;
-
-  // sort filter
-  const sortFilter = (a, b) =>
-    sort === "des" ? a.id > b.id && -1 : a.id < b.id && -1;
-
-  let content = colleges
-    ?.filter(countryFilter)
-    ?.filter(courseFilter)
-    ?.filter(specializationsFilter)
-    ?.filter(intakeFilter)
-    ?.sort(sortFilter)
-    .slice(perPage.start, perPage.end !== 0 ? perPage.end : 12)
-    ?.map((item) => (
-      <div className="col" key={item.id}>
-        <CollegeCard item={item} />
-      </div>
-
-      // End all colleges
-    ));
-
-  // sort handler
-  const sortHandler = (e) => {
-    dispatch(addSort(e.target.value));
-  };
-
-  // per page handler
-  const perPageHandler = (e) => {
-    const pageData = JSON.parse(e.target.value);
-    dispatch(addPerPage(pageData));
-  };
-
-  // clear all filters
-  const clearAll = () => {
-    dispatch(clearCountry());
-    dispatch(clearCourse());
-    dispatch(clearSpecializations());
-    dispatch(clearIntake());
-    dispatch(clearCountryToggle());
-    dispatch(clearCourseToggle());
-    dispatch(clearSpecializationsToggle());
-    dispatch(clearIntakeToggle());
-    dispatch(addSort(""));
-    dispatch(addPerPage({ start: 0, end: 0 }));
-  };
+  let content = response?.data.map((item) => (
+    <div className="col" key={item.collegeCourseId}>
+      <CollegeCard item={item} />
+    </div>
+  ));
 
   return (
     <>
@@ -103,13 +32,13 @@ const AllColleges = () => {
         <div className="row align-items-center">
           <div className="col-md-6">
             <div className="shop-top-left">
-              <p>We found {content?.length} courses for you</p>
+              <p>We found {response?.pagination.totalItems} courses for you</p>
             </div>
           </div>
           <div className="col-md-6">
             <div className="d-flex justify-content-center justify-content-md-end align-items-center">
               <div>
-                {country?.length !== 0 ||
+                {/* {country?.length !== 0 ||
                 course?.length !== 0 ||
                 specializations?.length !== 0 ||
                 intake?.length !== 0 ||
@@ -122,14 +51,14 @@ const AllColleges = () => {
                   >
                     Reset
                   </button>
-                ) : undefined}
+                ) : undefined} */}
               </div>
               <div className="shop-top-right m-0 ms-md-auto">
                 <select
-                  value={sort}
+                  // value={sort}
                   name="orderby"
                   className="orderby"
-                  onChange={sortHandler}
+                  // onChange={sortHandler}
                 >
                   <option value="">Sort by (default)</option>
                   <option value="asc">Newest</option>
@@ -138,9 +67,9 @@ const AllColleges = () => {
               </div>
               <div>
                 <select
-                  onChange={perPageHandler}
+                  // onChange={perPageHandler}
                   className="chosen-single form-select ms-3 "
-                  value={JSON.stringify(perPage)}
+                  // value={JSON.stringify(perPage)}
                 >
                   <option
                     value={JSON.stringify({
