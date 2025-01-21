@@ -37,7 +37,7 @@ export default function HeroBannerSearch({ currentActive }) {
       console.log("collegeCourses", collegeCourses);
 
       const response = await axios.post(
-        "http://82.112.234.51//api/college-course/collegeCourses",
+        "http://82.112.234.51/api/college-course/collegeCourses",
         collegeCourses,
         {
           headers: {
